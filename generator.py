@@ -8,7 +8,7 @@ isbns = []
 
 def genUsager(count):
     insert = "INSERT INTO usager (numEtu, nom, prenom, categorie) VALUES\n"
-    numbers = sample(range(40000, 60000), count)
+    numbers = sample(range(40000, 70000), count)
     for i in range(count):
         insert += "("
         numsEtu[str(numbers[i])] = str(randint(1, 3))
@@ -46,7 +46,7 @@ def genOuvrage(count):
 
 
 def genEmprunt(count):
-    insert = "INSERT INTO emprunt VALUES\n"
+    insert = "INSERT INTO emprunt (numEtu, isbn, dateEmp, rendu) VALUES\n"
     tempNumsEtu = numsEtu.copy()
     tempIsbns = isbns.copy()
     for i in range(count):
@@ -59,15 +59,20 @@ def genEmprunt(count):
         insert += isbn + ", "
         tempIsbns.remove(isbn)
         borrowDate = datetime.date(randint(2010, 2021), randint(1, 12), randint(1, 28))
-        match categorie:
-            case "1":
-                endBorrowDate = borrowDate + datetime.timedelta(days=3)
-            case "2":
-                endBorrowDate = borrowDate + datetime.timedelta(days=5)
-            case "3":
-                endBorrowDate = borrowDate + datetime.timedelta(days=6)
+        # match categorie:
+        #     case "1":
+        #         endBorrowDate = borrowDate + datetime.timedelta(days=10)
+        #     case "2":
+        #         endBorrowDate = borrowDate + datetime.timedelta(days=15)
+        #     case "3":
+        #         endBorrowDate = borrowDate + datetime.timedelta(days=20)
         insert += "'" + borrowDate.strftime("%Y-%m-%d") + "', "
-        insert += "'" + endBorrowDate.strftime("%Y-%m-%d") + "'"
+        temp = randint(0, 100)
+        if temp < 10:
+            insert += "0"
+        else:
+            insert += "1"
+        # insert += "'" + endBorrowDate.strftime("%Y-%m-%d") + "'"
         insert += "),\n"
     insert = insert[:-2] + ";"
     return insert
@@ -93,21 +98,11 @@ def genSuggestion(count):
 
 
 def genAll(countUsager, countOuvrage, countEmprunt, countSuggestion):
-    usager = open("sql/dataUsager.sql", "w")
-    usager.write(genUsager(countUsager))
-    usager.close()
+    output = open("sql/output.sql", "w")
+    output.write(genUsager(countUsager))
+    output.write("\n\n" + genOuvrage(countOuvrage))
+    output.write("\n\n" + genEmprunt(countEmprunt))
+    output.write("\n\n" + genSuggestion(countSuggestion))
+    output.close()
 
-    ouvrage = open("sql/dataOuvrage.sql", "w")
-    ouvrage.write(genOuvrage(countOuvrage))
-    ouvrage.close()
-
-    emprunt = open("sql/dataEmprunt.sql", "w")
-    emprunt.write(genEmprunt(countEmprunt))
-    emprunt.close()
-
-    suggestion = open("sql/dataSuggestion.sql", "w")
-    suggestion.write(genSuggestion(countSuggestion))
-    suggestion.close()
-
-
-genAll(500, 200, 120, 70)
+genAll(7, 5, 3, 2)

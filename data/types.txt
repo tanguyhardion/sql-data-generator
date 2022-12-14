@@ -1,11 +1,11 @@
 aventure 
 fiction
 romance
+non-fiction
+science-fiction
 horreur
 mystère
 thriller
-non-fiction
-science-fiction
 fantasy
 poesie
 drame
@@ -13,7 +13,7 @@ biographie
 histoire
 guide
 voyage
-enfants
+jeunesse
 religion
 science
 mathematiques
@@ -23,6 +23,6 @@ bande dessinee
 art
 cuisine
 journal
-serie
-trilogie
 encyclopedie
+essai
+these
